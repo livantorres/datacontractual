@@ -132,7 +132,6 @@
             display: flex;
             flex-direction: column;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            width: 100%;
         }
         
         /* Topbar */
@@ -187,23 +186,21 @@
             
             /* Ajustes del topbar en móvil para evitar superposición */
             .topbar {
-                padding: 0 15px;
+                padding: 0 10px;
             }
             .topbar-right-content {
                 display: flex;
-                flex-direction: column;
-                align-items: flex-end;
+                flex-direction: row;
+                align-items: center;
             }
-            #selector_vigencia {
-                width: 80px !important;
+            #selector_vigencia_movil {
+                width: 75px !important;
                 font-size: 0.8rem;
-                padding: 0.25rem;
-            }
-            .user-profile span {
-                font-size: 0.85rem;
+                padding: 0.2rem;
             }
             .user-profile .btn {
-                padding: 0.35rem 0.6rem !important;
+                padding: 0.25rem 0.5rem !important;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -244,7 +241,7 @@
             <button class="btn btn-light me-2" id="toggle-sidebar" style="position: relative; z-index: 1050; padding: 0.375rem 0.6rem;">
                 <i class="fas fa-bars"></i>
             </button>
-            <span class="d-md-none fw-bold text-dark me-2" style="font-size: 0.95rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Contractual</span></span>
+            <span class="d-md-none fw-bold text-dark me-1" style="font-size: 0.9rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Cont</span></span>
             <div class="d-none d-md-flex align-items-center">
                 <span class="fw-bold text-muted me-2">Vigencia:</span>
                 <div style="width: 100px;">
@@ -263,7 +260,7 @@
         </div>
         
         <div class="user-profile topbar-right-content d-flex align-items-center flex-shrink-0 ms-auto">
-            <div class="d-md-none me-2" style="width: 80px;">
+            <div class="d-md-none me-2" style="width: 75px;">
                 <select class="form-select form-select-sm vigencia-select" id="selector_vigencia_movil">
                     <?php 
                     foreach ($vigencias as $v):
@@ -274,7 +271,7 @@
                 </select>
             </div>
             <span class="me-2 text-dark fw-semibold d-none d-sm-inline"><?php echo $_SESSION['usuario_nombre']; ?></span>
-            <div class="btn btn-secondary rounded-circle px-3 py-2"><i class="fas fa-user"></i></div>
+            <div class="btn btn-secondary rounded-circle px-2 py-1"><i class="fas fa-user"></i></div>
         </div>
     </div>
     
