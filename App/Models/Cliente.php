@@ -63,8 +63,8 @@ class Cliente {
      */
     public function create($data) {
         try {
-            $sql = "INSERT INTO clientes (tipo_cliente, nombre_razon_social, nit_rfc, direccion, email, telefono, estado, foto, documento_pdf, actualizado_por, creado_en) 
-                    VALUES (:tipo_cliente, :nombre, :nit, :direccion, :email, :telefono, :estado, :foto, :documento_pdf, :actualizado_por, NOW())";
+            $sql = "INSERT INTO clientes (tipo_cliente, nombre_razon_social, nit_rfc, direccion, email, telefono, estado, foto, documento_pdf, rut_pdf, actualizado_por, creado_en) 
+                    VALUES (:tipo_cliente, :nombre, :nit, :direccion, :email, :telefono, :estado, :foto, :documento_pdf, :rut_pdf, :actualizado_por, NOW())";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute([
@@ -77,6 +77,7 @@ class Cliente {
                 ':estado'       => $data['estado'] ?? 'Activo',
                 ':foto'         => $data['foto'] ?? null,
                 ':documento_pdf'=> $data['documento_pdf'] ?? null,
+                ':rut_pdf'      => $data['rut_pdf'] ?? null,
                 ':actualizado_por' => $_SESSION['usuario_id'] ?? null
             ]);
             
@@ -123,6 +124,10 @@ class Cliente {
             if (isset($data['documento_pdf'])) {
                 $campos[] = "documento_pdf = :documento_pdf";
                 $params[':documento_pdf'] = $data['documento_pdf'];
+            }
+            if (isset($data['rut_pdf'])) {
+                $campos[] = "rut_pdf = :rut_pdf";
+                $params[':rut_pdf'] = $data['rut_pdf'];
             }
 
             $sql = "UPDATE clientes SET " . implode(", ", $campos) . " WHERE id = :id";

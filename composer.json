@@ -3,7 +3,9 @@
         "dompdf/dompdf": "^3.1",
         "phpoffice/phpspreadsheet": "^1.19",
         "phpoffice/phpword": "^1.4",
-        "phpmailer/phpmailer": "^7.1"
+        "phpmailer/phpmailer": "^7.1",
+        "setasign/fpdi": "^2.6",
+        "tecnickcom/tcpdf": "^6.11"
     },
     "config": {
         "platform": {

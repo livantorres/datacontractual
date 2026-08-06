@@ -72,13 +72,26 @@
                             <input type="text" class="form-control" id="direccion" name="direccion">
                         </div>
                         <hr>
-                        <div class="col-md-6">
-                            <label class="form-label">Foto / Logo (Opcional)</label>
-                            <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                        <div class="col-md-4">
+                            <label class="form-label">Foto / Logo</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                                <button class="btn btn-outline-secondary btn-ver-actual d-none" type="button" id="btnVerFoto" title="Ver archivo actual"><i class="fas fa-eye"></i></button>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Documento PDF (Opcional)</label>
-                            <input type="file" class="form-control" id="documento_pdf" name="documento_pdf" accept=".pdf">
+                        <div class="col-md-4">
+                            <label class="form-label">Documento PDF</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="documento_pdf" name="documento_pdf" accept=".pdf">
+                                <button class="btn btn-outline-secondary btn-ver-actual d-none" type="button" id="btnVerDoc" title="Ver archivo actual"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">RUT PDF</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="rut_pdf" name="rut_pdf" accept=".pdf">
+                                <button class="btn btn-outline-secondary btn-ver-actual d-none" type="button" id="btnVerRut" title="Ver archivo actual"><i class="fas fa-eye"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 data: 'foto',
                 render: function(data, type, row) {
                     if (data) {
-                        return `<img src="/uploads/clientes/${data}" alt="Foto" class="rounded-circle" width="40" height="40" style="object-fit: cover;">`;
+                        return `<img src="/public/uploads/clientes/fotos/${data}" alt="Foto" class="rounded-circle" width="40" height="40" style="object-fit: cover; cursor:pointer;" onclick="mostrarPreviaArchivos('/public/uploads/clientes/fotos/${data}', 'image')">`;
                     }
                     return `<div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width:40px; height:40px;"><i class="fas fa-building"></i></div>`;
                 }
@@ -136,9 +149,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         ? `<button class="btn btn-sm btn-outline-warning btn-estado" title="Inactivar"><i class="fas fa-ban"></i></button>`
                         : `<button class="btn btn-sm btn-outline-success btn-estado" title="Activar"><i class="fas fa-check"></i></button>`;
                     
+                    let btnDoc = row.documento_pdf 
+                        ? `<button class="btn btn-sm btn-outline-info btn-descargar" data-id="${row.id}" data-tipo="documento_pdf" title="Descargar Doc NIT"><i class="fas fa-file-pdf"></i></button>`
+                        : '';
+                    let btnRut = row.rut_pdf 
+                        ? `<button class="btn btn-sm btn-outline-info btn-descargar" data-id="${row.id}" data-tipo="rut_pdf" title="Descargar RUT"><i class="fas fa-file-invoice"></i></button>`
+                        : '';
+                    
                     return `
                         <div class="d-flex gap-1">
                             <button class="btn btn-sm btn-outline-primary btn-editar" title="Editar"><i class="fas fa-edit"></i></button>
+                            ${btnDoc}
+                            ${btnRut}
                             ${btnEstado}
                             <!-- <button class="btn btn-sm btn-outline-danger btn-eliminar-fisico" title="Eliminar Físicamente"><i class="fas fa-trash"></i></button> -->
                         </div>
@@ -162,6 +184,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('cliente_id').value = '';
         $('#tipo_cliente').val('Institucion').trigger('change');
         document.getElementById('modalClienteLabel').innerText = 'Registrar Cliente';
+        
+        // Ocultar botones de vista previa
+        document.querySelectorAll('.btn-ver-actual').forEach(btn => btn.classList.add('d-none'));
+        
         modalCliente.show();
     });
 
@@ -213,6 +239,26 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#tipo_cliente').val(data.tipo_cliente).trigger('change');
         
         document.getElementById('modalClienteLabel').innerText = 'Editar Cliente';
+        
+        // Configurar botones de vista previa si existen archivos
+        if(data.foto) {
+            $('#btnVerFoto').removeClass('d-none').attr('onclick', `mostrarPreviaArchivos('/public/uploads/clientes/fotos/${data.foto}', 'image')`);
+        } else {
+            $('#btnVerFoto').addClass('d-none');
+        }
+        
+        if(data.documento_pdf) {
+            $('#btnVerDoc').removeClass('d-none').attr('onclick', `mostrarPreviaArchivos('/public/uploads/clientes/documentos_nit/${data.documento_pdf}', 'pdf')`);
+        } else {
+            $('#btnVerDoc').addClass('d-none');
+        }
+
+        if(data.rut_pdf) {
+            $('#btnVerRut').removeClass('d-none').attr('onclick', `mostrarPreviaArchivos('/public/uploads/clientes/rut/${data.rut_pdf}', 'pdf')`);
+        } else {
+            $('#btnVerRut').addClass('d-none');
+        }
+
         modalCliente.show();
     });
 
@@ -281,5 +327,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Acción Descargar PDF
+    $('#clientesTable tbody').on('click', '.btn-descargar', function() {
+        const id = $(this).data('id');
+        const tipo = $(this).data('tipo');
+
+        Swal.fire({
+            title: 'Opciones de Descarga',
+            text: '¿Deseas descargar el documento protegido con contraseña (tu NIT/RFC) o el original?',
+            icon: 'question',
+            showCancelButton: true,
+            showDenyButton: true,
+            confirmButtonText: '<i class="fas fa-lock"></i> Con Contraseña',
+            denyButtonText: '<i class="fas fa-unlock"></i> Sin Contraseña',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#198754',
+            denyButtonColor: '#0dcaf0'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/clientes/descargarPdf?id=${id}&tipo=${tipo}&protegido=1`;
+            } else if (result.isDenied) {
+                window.location.href = `/clientes/descargarPdf?id=${id}&tipo=${tipo}&protegido=0`;
+            }
+        });
+    });
+
+    // Previsualización de archivos antes de subir (en memoria)
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const fileURL = URL.createObjectURL(file);
+                const isImage = file.type.startsWith('image/');
+                const isPdf = file.type === 'application/pdf';
+                
+                if (isImage) {
+                    mostrarPreviaArchivos(fileURL, 'image');
+                } else if (isPdf) {
+                    mostrarPreviaArchivos(fileURL, 'pdf');
+                }
+            }
+        });
+    });
+
 });
+
+// Función global para mostrar archivos con SweetAlert2
+function mostrarPreviaArchivos(url, tipo) {
+    let htmlContent = '';
+    
+    if (tipo === 'image') {
+        htmlContent = `<img src="${url}" style="max-width: 100%; max-height: 70vh; border-radius: 8px;">`;
+    } else if (tipo === 'pdf') {
+        htmlContent = `<iframe src="${url}" width="100%" height="500px" style="border: none; border-radius: 8px;"></iframe>`;
+    }
+
+    Swal.fire({
+        title: 'Vista Previa',
+        html: htmlContent,
+        width: '80%',
+        showCloseButton: true,
+        showConfirmButton: false
+    });
+}
 </script>
