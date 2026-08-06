@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Models\Cliente;
 use Exception;
 use setasign\Fpdi\Tcpdf\Fpdi;
+use Smalot\PdfParser\Parser;
 
 class ClientesController {
     private $clienteModel;
@@ -79,6 +80,36 @@ class ClientesController {
             if ($this->clienteModel->nitExists($nit, $id ? $id : null)) {
                 echo json_encode(['success' => false, 'message' => 'El Documento/NIT ya se encuentra registrado.']);
                 exit;
+            }
+
+            // Validación Inteligente del RUT (si se subió archivo PDF)
+            if (isset($_FILES['rut_pdf']) && $_FILES['rut_pdf']['error'] === UPLOAD_ERR_OK) {
+                $ext = strtolower(pathinfo($_FILES['rut_pdf']['name'], PATHINFO_EXTENSION));
+                if ($ext === 'pdf') {
+                    try {
+                        $parser = new Parser();
+                        $pdfParsed = $parser->parseFile($_FILES['rut_pdf']['tmp_name']);
+                        $text = $pdfParsed->getText();
+                        
+                        // Si el texto está vacío, probablemente sea un escaneo (imagen) sin capa de texto.
+                        // Si tiene texto, validamos la coincidencia del NIT.
+                        if (trim($text) !== '') {
+                            // Limpiar guiones y espacios para hacer coincidencia exacta
+                            $nitBusqueda = preg_replace('/[^a-zA-Z0-9]/', '', $nit);
+                            $textoLimpio = preg_replace('/[^a-zA-Z0-9]/', '', $text);
+                            
+                            if (strpos($textoLimpio, $nitBusqueda) === false) {
+                                echo json_encode([
+                                    'success' => false, 
+                                    'message' => 'Validación de IA fallida: El número de identificación (NIT/RFC) no coincide con el texto detectado dentro del archivo RUT adjunto.'
+                                ]);
+                                exit;
+                            }
+                        }
+                    } catch (Exception $e) {
+                        // Ignorar errores de parseo si el PDF está corrupto o cifrado de antemano
+                    }
+                }
             }
 
             // Si es edición, obtenemos el cliente actual para poder eliminar archivos viejos
