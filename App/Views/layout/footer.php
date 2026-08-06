@@ -48,6 +48,32 @@
         this.classList.remove('active');
     });
 
+    // Dark Mode Toggle
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeToggleIcon = themeToggleBtn?.querySelector('i');
+    
+    function setDarkMode(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+            themeToggleIcon?.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeToggleIcon?.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // Inicializar Dark Mode basado en localStorage
+    if (localStorage.getItem('theme') === 'dark') {
+        setDarkMode(true);
+    }
+
+    themeToggleBtn?.addEventListener('click', function() {
+        const isDark = document.body.classList.contains('dark-mode');
+        setDarkMode(!isDark);
+    });
+
     // Función para Actualizar Vigencia
     function actualizarVigencia(vigencia_id, anio) {
         fetch('/dashboard/setVigencia', {
