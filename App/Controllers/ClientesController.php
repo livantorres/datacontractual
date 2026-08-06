@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Models\Cliente;
 use Exception;
 
-class ClienteController {
+class ClientesController {
     private $clienteModel;
     private $uploadDir = __DIR__ . '/../../public/uploads/clientes/';
 

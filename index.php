@@ -63,10 +63,10 @@ if (class_exists($controllerClass)) {
     } else {
         // Método no encontrado (404)
         http_response_code(404);
-        echo "404 - Método no encontrado";
+        require_once __DIR__ . '/App/Views/errors/404.php';
     }
 } else {
     // Controlador no encontrado (404)
     http_response_code(404);
-    echo "404 - Página no encontrada";
+    require_once __DIR__ . '/App/Views/errors/404.php';
 }
