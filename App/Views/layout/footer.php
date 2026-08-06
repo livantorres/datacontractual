@@ -16,6 +16,21 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    // Inicializar Select2 en todos los select que tengan la clase form-select (excepto los que no queramos)
+    $(document).ready(function() {
+        // Para Selects Generales
+        $('select:not(#selector_vigencia):not(#selector_vigencia_movil)').select2({
+            theme: 'bootstrap-5',
+            width: '100%'
+        });
+        
+        // Para los selectores de vigencia (evitar que la caja de búsqueda se muestre si hay pocos)
+        $('#selector_vigencia, #selector_vigencia_movil').select2({
+            theme: 'bootstrap-5',
+            minimumResultsForSearch: Infinity
+        });
+    });
+
     // Toggle Sidebar para móvil y escritorio
     document.getElementById('toggle-sidebar')?.addEventListener('click', function() {
         if (window.innerWidth <= 768) {
@@ -33,11 +48,8 @@
         this.classList.remove('active');
     });
 
-    // Actualizar Vigencia
-    document.getElementById('selector_vigencia')?.addEventListener('change', function() {
-        const vigencia_id = this.value;
-        const anio = this.options[this.selectedIndex].text;
-        
+    // Función para Actualizar Vigencia
+    function actualizarVigencia(vigencia_id, anio) {
         fetch('/dashboard/setVigencia', {
             method: 'POST',
             headers: {
@@ -61,6 +73,13 @@
                 Swal.fire('Error', 'No se pudo cambiar la vigencia', 'error');
             }
         });
+    }
+
+    // Eventos para selectores de vigencia (usando jQuery por Select2)
+    $('#selector_vigencia, #selector_vigencia_movil').on('change', function() {
+        const vigencia_id = $(this).val();
+        const anio = $(this).find('option:selected').text();
+        actualizarVigencia(vigencia_id, anio);
     });
 </script>
 

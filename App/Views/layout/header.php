@@ -241,11 +241,12 @@
 <div class="main-content" id="main-content">
     <div class="topbar">
         <div class="d-flex align-items-center">
-            <button class="btn btn-light me-2 me-md-3" id="toggle-sidebar">
+            <button class="btn btn-light me-2 me-md-3" id="toggle-sidebar" style="position: relative; z-index: 1050;">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="d-flex align-items-center">
-                <span class="fw-bold text-muted me-2 d-none d-sm-inline">Vigencia:</span>
+            <span class="d-md-none fw-bold text-dark me-2" style="font-size: 1.1rem;">Data<span style="color: #5bc0be;">Contractual</span></span>
+            <div class="d-flex align-items-center d-none d-sm-flex">
+                <span class="fw-bold text-muted me-2">Vigencia:</span>
                 <select class="form-select form-select-sm" id="selector_vigencia" style="width: 100px;">
                     <?php 
                     require_once __DIR__ . '/../../Models/Usuario.php';
@@ -259,6 +260,16 @@
             </div>
         </div>
         <div class="user-profile topbar-right-content d-flex align-items-center">
+            <div class="d-md-none d-sm-flex me-2">
+                <select class="form-select form-select-sm" id="selector_vigencia_movil" style="width: 80px;">
+                    <?php 
+                    foreach ($vigencias as $v):
+                        $selected = ($_SESSION['vigencia_id'] ?? '') == $v['id'] ? 'selected' : '';
+                    ?>
+                        <option value="<?php echo $v['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($v['anio']); ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
             <span class="me-2 text-dark fw-semibold d-none d-sm-inline"><?php echo $_SESSION['usuario_nombre']; ?></span>
             <div class="btn btn-secondary rounded-circle px-3 py-2"><i class="fas fa-user"></i></div>
         </div>
