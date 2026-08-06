@@ -10,7 +10,7 @@
 <div class="card card-premium">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover align-middle w-100" id="clientesTable">
+            <table class="table table-hover align-middle w-100 nowrap" id="clientesTable">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Inicializar DataTables
     const tabla = $('#clientesTable').DataTable({
+        responsive: true,
         ajax: '/clientes/getData',
         columns: [
             { data: 'id' },
