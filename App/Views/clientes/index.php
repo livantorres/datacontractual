@@ -74,23 +74,32 @@
                         <hr>
                         <div class="col-md-4">
                             <label class="form-label">Foto / Logo</label>
-                            <div class="input-group">
-                                <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
-                                <button class="btn btn-outline-secondary btn-ver-actual d-none" type="button" id="btnVerFoto" title="Ver archivo actual"><i class="fas fa-eye"></i></button>
+                            <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                            <div id="preview-container-foto" class="mt-2 d-none d-flex align-items-center bg-secondary bg-opacity-10 p-2 rounded border">
+                                <div id="preview-thumb-foto" class="me-2" style="width: 40px; height: 40px; overflow: hidden; border-radius: 4px;"></div>
+                                <div class="text-truncate me-auto small" id="preview-name-foto" style="max-width: 120px;"></div>
+                                <button type="button" class="btn btn-sm btn-outline-info me-1 px-2 py-0" onclick="verPreviewActivo('foto')" title="Ver Vista Previa"><i class="fas fa-eye"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger px-2 py-0" onclick="removerArchivo('foto')" title="Quitar Archivo"><i class="fas fa-times"></i></button>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Documento PDF</label>
-                            <div class="input-group">
-                                <input type="file" class="form-control" id="documento_pdf" name="documento_pdf" accept=".pdf">
-                                <button class="btn btn-outline-secondary btn-ver-actual d-none" type="button" id="btnVerDoc" title="Ver archivo actual"><i class="fas fa-eye"></i></button>
+                            <input type="file" class="form-control" id="documento_pdf" name="documento_pdf" accept=".pdf">
+                            <div id="preview-container-documento_pdf" class="mt-2 d-none d-flex align-items-center bg-secondary bg-opacity-10 p-2 rounded border">
+                                <div class="me-2 text-danger fs-4"><i class="fas fa-file-pdf"></i></div>
+                                <div class="text-truncate me-auto small" id="preview-name-documento_pdf" style="max-width: 120px;"></div>
+                                <button type="button" class="btn btn-sm btn-outline-info me-1 px-2 py-0" onclick="verPreviewActivo('documento_pdf')" title="Ver Vista Previa"><i class="fas fa-eye"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger px-2 py-0" onclick="removerArchivo('documento_pdf')" title="Quitar Archivo"><i class="fas fa-times"></i></button>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">RUT PDF</label>
-                            <div class="input-group">
-                                <input type="file" class="form-control" id="rut_pdf" name="rut_pdf" accept=".pdf">
-                                <button class="btn btn-outline-secondary btn-ver-actual d-none" type="button" id="btnVerRut" title="Ver archivo actual"><i class="fas fa-eye"></i></button>
+                            <input type="file" class="form-control" id="rut_pdf" name="rut_pdf" accept=".pdf">
+                            <div id="preview-container-rut_pdf" class="mt-2 d-none d-flex align-items-center bg-secondary bg-opacity-10 p-2 rounded border">
+                                <div class="me-2 text-danger fs-4"><i class="fas fa-file-pdf"></i></div>
+                                <div class="text-truncate me-auto small" id="preview-name-rut_pdf" style="max-width: 120px;"></div>
+                                <button type="button" class="btn btn-sm btn-outline-info me-1 px-2 py-0" onclick="verPreviewActivo('rut_pdf')" title="Ver Vista Previa"><i class="fas fa-eye"></i></button>
+                                <button type="button" class="btn btn-sm btn-outline-danger px-2 py-0" onclick="removerArchivo('rut_pdf')" title="Quitar Archivo"><i class="fas fa-times"></i></button>
                             </div>
                         </div>
                     </div>
@@ -185,8 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#tipo_cliente').val('Institucion').trigger('change');
         document.getElementById('modalClienteLabel').innerText = 'Registrar Cliente';
         
-        // Ocultar botones de vista previa
-        document.querySelectorAll('.btn-ver-actual').forEach(btn => btn.classList.add('d-none'));
+        // Ocultar minivistas de archivos
+        document.querySelectorAll('[id^="preview-container-"]').forEach(el => el.classList.add('d-none'));
         
         modalCliente.show();
     });
@@ -241,22 +250,16 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('modalClienteLabel').innerText = 'Editar Cliente';
         
         // Configurar botones de vista previa si existen archivos
-        if(data.foto) {
-            $('#btnVerFoto').removeClass('d-none').attr('onclick', `mostrarPreviaArchivos('/public/uploads/clientes/fotos/${data.foto}', 'image')`);
-        } else {
-            $('#btnVerFoto').addClass('d-none');
-        }
-        
-        if(data.documento_pdf) {
-            $('#btnVerDoc').removeClass('d-none').attr('onclick', `mostrarPreviaArchivos('/public/uploads/clientes/documentos_nit/${data.documento_pdf}', 'pdf')`);
-        } else {
-            $('#btnVerDoc').addClass('d-none');
-        }
+        document.querySelectorAll('[id^="preview-container-"]').forEach(el => el.classList.add('d-none'));
 
+        if(data.foto) {
+            configurarMiniPreview('foto', `/public/uploads/clientes/fotos/${data.foto}`, 'image', data.foto, true);
+        }
+        if(data.documento_pdf) {
+            configurarMiniPreview('documento_pdf', `/public/uploads/clientes/documentos_nit/${data.documento_pdf}`, 'pdf', data.documento_pdf, true);
+        }
         if(data.rut_pdf) {
-            $('#btnVerRut').removeClass('d-none').attr('onclick', `mostrarPreviaArchivos('/public/uploads/clientes/rut/${data.rut_pdf}', 'pdf')`);
-        } else {
-            $('#btnVerRut').addClass('d-none');
+            configurarMiniPreview('rut_pdf', `/public/uploads/clientes/rut/${data.rut_pdf}`, 'pdf', data.rut_pdf, true);
         }
 
         modalCliente.show();
@@ -352,25 +355,72 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Objeto para mantener las URLs activas y liberarlas si se quitan
+    window.archivosActivos = { foto: null, documento_pdf: null, rut_pdf: null };
+
     // Previsualización de archivos antes de subir (en memoria)
     document.querySelectorAll('input[type="file"]').forEach(input => {
         input.addEventListener('change', function(e) {
+            const idInput = this.id;
+            
             if (this.files && this.files[0]) {
                 const file = this.files[0];
                 const fileURL = URL.createObjectURL(file);
                 const isImage = file.type.startsWith('image/');
                 const isPdf = file.type === 'application/pdf';
+                const tipoStr = isImage ? 'image' : 'pdf';
                 
-                if (isImage) {
-                    mostrarPreviaArchivos(fileURL, 'image');
-                } else if (isPdf) {
-                    mostrarPreviaArchivos(fileURL, 'pdf');
-                }
+                // Mostrar SWAL inmediatamente
+                mostrarPreviaArchivos(fileURL, tipoStr).then(() => {
+                    // Al darle OK, configurar la vista miniatura
+                    configurarMiniPreview(idInput, fileURL, tipoStr, file.name, false);
+                });
+            } else {
+                removerArchivo(idInput);
             }
         });
     });
 
 });
+
+// Función para configurar el cuadro de preview debajo del input
+function configurarMiniPreview(inputId, url, tipo, nombre, esExistente) {
+    window.archivosActivos[inputId] = { url, tipo, esExistente };
+    const container = document.getElementById(`preview-container-${inputId}`);
+    const nameEl = document.getElementById(`preview-name-${inputId}`);
+    
+    nameEl.innerText = nombre;
+    nameEl.title = nombre;
+    
+    if (tipo === 'image') {
+        const thumb = document.getElementById(`preview-thumb-${inputId}`);
+        if(thumb) thumb.innerHTML = `<img src="${url}" style="width: 100%; height: 100%; object-fit: cover;">`;
+    }
+    
+    container.classList.remove('d-none');
+}
+
+// Función para cuando presionan la X en el preview mini
+function removerArchivo(inputId) {
+    const input = document.getElementById(inputId);
+    input.value = ''; // Limpiar el file input
+    const container = document.getElementById(`preview-container-${inputId}`);
+    container.classList.add('d-none');
+    
+    if (window.archivosActivos[inputId] && !window.archivosActivos[inputId].esExistente) {
+        // Liberar la memoria si era un objeto URL
+        URL.revokeObjectURL(window.archivosActivos[inputId].url);
+    }
+    window.archivosActivos[inputId] = null;
+}
+
+// Función para volver a ver la vista previa desde el botón 👁️
+function verPreviewActivo(inputId) {
+    const data = window.archivosActivos[inputId];
+    if (data && data.url) {
+        mostrarPreviaArchivos(data.url, data.tipo);
+    }
+}
 
 // Función global para mostrar archivos con SweetAlert2
 function mostrarPreviaArchivos(url, tipo) {
@@ -379,15 +429,21 @@ function mostrarPreviaArchivos(url, tipo) {
     if (tipo === 'image') {
         htmlContent = `<img src="${url}" style="max-width: 100%; max-height: 70vh; border-radius: 8px;">`;
     } else if (tipo === 'pdf') {
-        htmlContent = `<iframe src="${url}" width="100%" height="500px" style="border: none; border-radius: 8px;"></iframe>`;
+        // Usar 80vh para PDFs
+        htmlContent = `<iframe src="${url}" width="100%" style="height: 80vh; border: none; border-radius: 8px;"></iframe>`;
     }
 
-    Swal.fire({
+    return Swal.fire({
         title: 'Vista Previa',
         html: htmlContent,
-        width: '80%',
+        width: '85%',
         showCloseButton: true,
-        showConfirmButton: false
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#5bc0be',
+        customClass: {
+            htmlContainer: 'p-0 overflow-hidden'
+        }
     });
 }
 </script>
