@@ -249,7 +249,7 @@
             <button class="btn btn-light me-2" id="toggle-sidebar" style="position: relative; z-index: 1050; padding: 0.375rem 0.6rem;">
                 <i class="fas fa-bars"></i>
             </button>
-            <span class="d-md-none fw-bold text-dark me-1" style="font-size: 0.9rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Cont</span></span>
+            <span class="d-md-none fw-bold text-dark me-1" style="font-size: 0.9rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Contractual</span></span>
             <div class="d-none d-md-flex align-items-center">
                 <span class="fw-bold text-muted me-2">Vigencia:</span>
                 <div style="width: 100px;">
