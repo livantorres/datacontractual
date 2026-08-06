@@ -21,7 +21,12 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
+            transition: background 0.3s, color 0.3s;
+        }
+        [data-bs-theme="light"] body {
+            background-color: #f8f9fa;
+        }
+        body {
             color: #333;
             overflow-x: hidden;
         }
@@ -227,17 +232,39 @@
         [data-bs-theme="dark"] .sidebar {
             border-right: 1px solid #333;
         }
+        [data-bs-theme="dark"] body {
+            background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            background-attachment: fixed;
+        }
         [data-bs-theme="dark"] .topbar {
-            background-color: #212529;
-            border-bottom: 1px solid #333;
+            background-color: rgba(33, 37, 41, 0.8) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        [data-bs-theme="dark"] .card-premium {
+            background-color: rgba(33, 37, 41, 0.6) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        [data-bs-theme="dark"] .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: #e0e0e0;
+            --bs-table-hover-bg: rgba(255,255,255,0.05);
+            --bs-table-hover-color: #fff;
+        }
+        [data-bs-theme="dark"] .table-light th,
+        [data-bs-theme="dark"] .table-light td {
+            background-color: rgba(255,255,255,0.05) !important;
+            color: #e0e0e0 !important;
+            border-bottom-color: rgba(255,255,255,0.1);
         }
         [data-bs-theme="dark"] .btn-light {
-            background-color: #2b3035;
+            background-color: rgba(255,255,255,0.1);
             color: #dee2e6;
-            border-color: #495057;
+            border-color: rgba(255,255,255,0.1);
         }
         [data-bs-theme="dark"] .btn-light:hover {
-            background-color: #3d434a;
+            background-color: rgba(255,255,255,0.2);
             color: #fff;
         }
         

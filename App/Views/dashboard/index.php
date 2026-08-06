@@ -69,7 +69,7 @@
 <div class="row">
     <div class="col-md-8">
         <div class="card card-premium">
-            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+            <div class="card-header bg-transparent border-bottom-0 pt-4 pb-0">
                 <h5 class="fw-bold">Contratos Recientes</h5>
             </div>
             <div class="card-body">
@@ -112,7 +112,7 @@
     
     <div class="col-md-4">
         <div class="card card-premium">
-            <div class="card-header bg-white border-bottom-0 pt-4 pb-0">
+            <div class="card-header bg-transparent border-bottom-0 pt-4 pb-0">
                 <h5 class="fw-bold">Accesos Rápidos</h5>
             </div>
             <div class="card-body">
