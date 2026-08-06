@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="d-flex gap-1">
                             <button class="btn btn-sm btn-outline-primary btn-editar" title="Editar"><i class="fas fa-edit"></i></button>
                             ${btnEstado}
-                            <button class="btn btn-sm btn-outline-danger btn-eliminar-fisico" title="Eliminar Físicamente"><i class="fas fa-trash"></i></button>
+                            <!-- <button class="btn btn-sm btn-outline-danger btn-eliminar-fisico" title="Eliminar Físicamente"><i class="fas fa-trash"></i></button> -->
                         </div>
                     `;
                 }
