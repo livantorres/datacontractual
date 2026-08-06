@@ -24,10 +24,9 @@
             width: 'resolve'
         });
         
-        // Para los selectores de vigencia (evitar que la caja de búsqueda se muestre si hay pocos)
+        // Para los selectores de vigencia
         $('.vigencia-select').select2({
             theme: 'bootstrap-5',
-            minimumResultsForSearch: Infinity,
             width: '100%'
         });
     });
