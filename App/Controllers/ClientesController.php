@@ -150,7 +150,8 @@ class ClientesController {
 
             // 3. Actualizar la base de datos si se subieron nuevos archivos
             if (!empty($archivosAActualizar)) {
-                $this->clienteModel->update($id, $archivosAActualizar);
+                $datosFinales = array_merge($data, $archivosAActualizar);
+                $this->clienteModel->update($id, $datosFinales);
             }
 
             echo json_encode(['success' => true, 'message' => $msg]);
