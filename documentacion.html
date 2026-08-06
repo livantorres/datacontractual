@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación Oficial - DataContractual</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #333; }
+        .hero-header { background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: #fff; padding: 60px 0; }
+        .hero-header h1 { font-weight: 700; }
+        .hero-header span { color: #5bc0be; }
+        .content-section { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        h2, h3 { color: #203a43; font-weight: 600; border-bottom: 2px solid #5bc0be; padding-bottom: 10px; margin-bottom: 20px; display: inline-block; }
+        ul.custom-list { list-style: none; padding-left: 0; }
+        ul.custom-list li { position: relative; padding-left: 25px; margin-bottom: 10px; }
+        ul.custom-list li::before { content: '✓'; position: absolute; left: 0; color: #5bc0be; font-weight: bold; }
+        .tech-badge { background-color: #e9ecef; color: #495057; padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; margin-right: 5px; display: inline-block; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+    <header class="hero-header text-center">
+        <div class="container">
+            <h1>Data<span>Contractual</span></h1>
+            <p class="lead mt-3">Documentación Técnica, Arquitectura y Flujo de Trabajo del Software</p>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        
+        <div class="content-section">
+            <h2>1. Descripción del Proyecto</h2>
+            <p><strong>DataContractual</strong> es un software web robusto y de alto rendimiento diseñado exclusivamente para que contadores y gestores puedan crear, administrar y disponer de los contratos de diferentes instituciones educativas o clientes/empresas independientes.</p>
+            <p>Se ha desarrollado con un enfoque especial en la <strong>seguridad, protección de datos (trazabilidad y auditoría), rapidez de respuesta (AJAX) y un diseño de interfaz altamente moderno y responsivo (UI/UX)</strong>.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>2. Stack Tecnológico</h2>
+            <p>El sistema está construido garantizando compatibilidad con servidores Legacy, pero aplicando patrones modernos:</p>
+            <div>
+                <span class="tech-badge">PHP 7.2.34 (Compatible con PHP 8)</span>
+                <span class="tech-badge">MySQL / PDO</span>
+                <span class="tech-badge">Arquitectura MVC (Modelo-Vista-Controlador)</span>
+                <span class="tech-badge">Vanilla JS + AJAX (Fetch)</span>
+                <span class="tech-badge">jQuery 3.7.1</span>
+                <span class="tech-badge">Bootstrap 5.3</span>
+                <span class="tech-badge">SweetAlert2 (Alertas)</span>
+                <span class="tech-badge">DataTables (Tablas dinámicas)</span>
+                <span class="tech-badge">Select2 (Búsqueda en selectores)</span>
+                <span class="tech-badge">Chart.js (Gráficas)</span>
+                <span class="tech-badge">Librerías PDF/Excel/Word (DomPDF, PhpSpreadsheet, PHPWord)</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>3. Arquitectura y Seguridad (Módulo de Auditoría)</h2>
+            <ul class="custom-list">
+                <li><strong>Protección contra Inyecciones:</strong> Todas las consultas a la base de datos se realizan usando sentencias preparadas de <code>PDO</code>.</li>
+                <li><strong>Manejo de Contraseñas:</strong> Encriptación <code>bcrypt</code> (hash seguro) para usuarios.</li>
+                <li><strong>Control de Sesión:</strong> Validación en un Front Controller (<code>index.php</code>) que bloquea el acceso a todas las rutas si no existe una sesión válida.</li>
+                <li><strong>Bitácora de Accesos:</strong> Se guarda la IP, fecha y hora de cada inicio de sesión en la tabla <code>bitacora_auditoria</code>.</li>
+                <li><strong>Trazabilidad de Movimientos:</strong> Toda tabla importante (Clientes, Plantillas, Contratos) posee los campos <code>actualizado_por</code> (ID del usuario) y <code>actualizado_en</code> (Timestamp), permitiendo auditar quién hizo la última modificación.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>4. Flujo de Trabajo (Workflow)</h2>
+            <ol>
+                <li><strong>Autenticación:</strong> El usuario ingresa con sus credenciales (ej. admin@datacontractual.com). El sistema verifica el hash y registra la IP.</li>
+                <li><strong>Vigencia Automática:</strong> El sistema identifica automáticamente el año actual y lo carga en la sesión (Ej. 2026).</li>
+                <li><strong>Dashboard Principal:</strong> El usuario accede a una interfaz premium. Puede cambiar la vigencia desde el menú superior (Selector de años usando Select2). Al cambiar la vigencia por AJAX, la sesión se actualiza y la pantalla se recarga para mostrar datos exclusivos de ese año.</li>
+                <li><strong>Gestión de Clientes:</strong> Módulo para crear Instituciones o Clientes Independientes (Fase 3).</li>
+                <li><strong>Plantillas de Contratos:</strong> Configuración de textos y variables que serán reemplazadas dinámicamente al generar un documento.</li>
+                <li><strong>Generación de Contratos:</strong> Se toma un Cliente, se cruza con una Plantilla, y se genera un Contrato final.</li>
+                <li><strong>Firmas y Respaldos:</strong> El contrato se exporta en PDF o Word para firma física. Luego de firmado, el usuario puede subir el PDF escaneado al sistema como respaldo digital definitivo.</li>
+            </ol>
+        </div>
+
+        <div class="content-section">
+            <h2>5. Estructura de Base de Datos (Core)</h2>
+            <p>La base de datos se rige por un esquema relacional estricto:</p>
+            <ul class="custom-list">
+                <li><strong>roles:</strong> Define niveles de acceso (Ej. Administrador, Usuario).</li>
+                <li><strong>usuarios:</strong> Personas con acceso al sistema.</li>
+                <li><strong>vigencias:</strong> Años fiscales de operación (Ej. 2024, 2025, 2026). Aisla los datos de contratos.</li>
+                <li><strong>clientes:</strong> Instituciones o personas a quienes se les hace un contrato.</li>
+                <li><strong>plantillas_contrato:</strong> Formatos maestros de los documentos legales.</li>
+                <li><strong>contratos:</strong> El documento generado para un cliente específico, asociado a una vigencia.</li>
+                <li><strong>bitacora_auditoria:</strong> Historial de logins y eventos críticos de seguridad.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>6. Diseño UI/UX y Modo Oscuro</h2>
+            <p>El sistema cuenta con una interfaz premium adaptable:</p>
+            <ul class="custom-list">
+                <li><strong>Diseño Responsivo:</strong> Adaptación perfecta a móviles, tablets y escritorio. Sidebar lateral colapsable (modo íconos).</li>
+                <li><strong>Dark Mode Nativo:</strong> Utilización del sistema `data-bs-theme="dark"` de Bootstrap 5 para garantizar alto contraste y legibilidad. Efectos de cristal (glassmorphism) en tarjetas con fondos corporativos en degradado.</li>
+                <li><strong>Adaptabilidad en Tiempo Real:</strong> Botón toggle para cambiar el tema y guardado automático en `localStorage`.</li>
+            </ul>
+        </div>
+
+        <div class="text-center mb-5 mt-4">
+            <p class="text-muted">Desarrollado para garantizar rapidez, confianza y experiencia premium en la gestión contractual.</p>
+        </div>
+    </div>
+</body>
+</html>
