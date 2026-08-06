@@ -241,10 +241,13 @@
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        [data-bs-theme="dark"] .card-premium {
-            background-color: rgba(33, 37, 41, 0.6) !important;
+        [data-bs-theme="dark"] .card-premium:not([class*="bg-"]) {
+            background-color: rgba(33, 37, 41, 0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
+        }
+        [data-bs-theme="dark"] .card-premium {
+            color: #fff;
         }
         [data-bs-theme="dark"] .table {
             --bs-table-bg: transparent;
@@ -313,7 +316,7 @@
             <button class="btn btn-light me-2" id="toggle-sidebar" style="position: relative; z-index: 1050; padding: 0.375rem 0.6rem;">
                 <i class="fas fa-bars"></i>
             </button>
-            <span class="d-md-none fw-bold text-dark me-1" style="font-size: 0.9rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Contractual</span></span>
+            <span class="d-md-none fw-bold text-body me-1" style="font-size: 0.9rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Contractual</span></span>
             <div class="d-none d-md-flex align-items-center">
                 <span class="fw-bold text-muted me-2">Vigencia:</span>
                 <div style="width: 100px;">
@@ -345,7 +348,7 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <span class="me-2 text-dark fw-semibold d-none d-sm-inline"><?php echo $_SESSION['usuario_nombre']; ?></span>
+            <span class="me-2 text-body fw-semibold d-none d-sm-inline"><?php echo $_SESSION['usuario_nombre']; ?></span>
             <div class="btn btn-secondary rounded-circle px-2 py-1"><i class="fas fa-user"></i></div>
         </div>
     </div>

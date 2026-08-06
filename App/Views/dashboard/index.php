@@ -28,10 +28,10 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="text-dark-50">Por Vencer (30 días)</h6>
+                        <h6 class="text-black-50">Por Vencer (30 días)</h6>
                         <h2 class="mb-0 fw-bold">8</h2>
                     </div>
-                    <div class="fs-1 text-dark-50"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="fs-1 text-black-50"><i class="fas fa-exclamation-triangle"></i></div>
                 </div>
             </div>
         </div>
