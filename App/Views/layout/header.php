@@ -203,6 +203,14 @@
                 font-size: 0.9rem;
             }
         }
+        
+        /* Forzar z-index del Dropdown de Select2 por encima de todo */
+        .select2-container--open {
+            z-index: 999999 !important;
+        }
+        .select2-dropdown {
+            z-index: 999999 !important;
+        }
     </style>
 </head>
 <body>
