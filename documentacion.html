@@ -20,6 +20,13 @@
         ul.custom-list li::before { content: '✓'; position: absolute; left: 0; color: #5bc0be; font-weight: bold; }
         .tech-badge { background-color: #e9ecef; color: #495057; padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; margin-right: 5px; display: inline-block; margin-bottom: 8px; }
     </style>
+    <!-- Mermaid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        });
+    </script>
 </head>
 <body>
 
@@ -69,6 +76,28 @@
 
         <div class="content-section">
             <h2>4. Flujo de Trabajo (Workflow)</h2>
+            
+            <div class="card bg-light border-0 mb-4 p-3 overflow-auto">
+                <div class="mermaid text-center">
+                    graph TD
+                        A([Usuario / Contador]) -->|Ingresa credenciales| B{Validación Login}
+                        B -->|Incorrecto| C[Muestra Alerta]
+                        B -->|Correcto| D[Inicia Sesión & Registra IP]
+                        D --> E[Dashboard Principal]
+                        E --> F[Selecciona Vigencia]
+                        
+                        F --> G[Módulo Clientes]
+                        F --> H[Módulo Plantillas]
+                        
+                        G --> I[Módulo Contratos]
+                        H --> I
+                        
+                        I --> J(Genera Documento PDF/Word)
+                        J --> K(Impresión y Firma Física)
+                        K --> L([Sube Respaldo Escaneado al Sistema])
+                </div>
+            </div>
+
             <ol>
                 <li><strong>Autenticación:</strong> El usuario ingresa con sus credenciales (ej. admin@datacontractual.com). El sistema verifica el hash y registra la IP.</li>
                 <li><strong>Vigencia Automática:</strong> El sistema identifica automáticamente el año actual y lo carga en la sesión (Ej. 2026).</li>
@@ -83,6 +112,39 @@
         <div class="content-section">
             <h2>5. Estructura de Base de Datos (Core)</h2>
             <p>La base de datos se rige por un esquema relacional estricto:</p>
+            
+            <div class="card bg-light border-0 mb-4 p-3 overflow-auto">
+                <div class="mermaid text-center">
+                    erDiagram
+                        ROLES ||--o{ USUARIOS : "posee"
+                        USUARIOS ||--o{ BITACORA : "registra acceso"
+                        USUARIOS ||--o{ CONTRATOS : "crea / actualiza"
+                        VIGENCIAS ||--o{ CONTRATOS : "filtra por año"
+                        CLIENTES ||--o{ CONTRATOS : "asociado a"
+                        PLANTILLAS ||--o{ CONTRATOS : "sirve de base para"
+                        
+                        USUARIOS {
+                            int id PK
+                            string nombre
+                            string email
+                            int rol_id FK
+                        }
+                        CLIENTES {
+                            int id PK
+                            enum tipo "Institucion, Independiente"
+                            string documento
+                            string nombre_razon_social
+                        }
+                        CONTRATOS {
+                            int id PK
+                            int cliente_id FK
+                            int plantilla_id FK
+                            int vigencia_id FK
+                            string estado
+                        }
+                </div>
+            </div>
+
             <ul class="custom-list">
                 <li><strong>roles:</strong> Define niveles de acceso (Ej. Administrador, Usuario).</li>
                 <li><strong>usuarios:</strong> Personas con acceso al sistema.</li>
