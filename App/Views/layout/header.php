@@ -22,13 +22,11 @@
         body {
             font-family: 'Inter', sans-serif;
             transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
         }
         [data-bs-theme="light"] body {
             background-color: #f8f9fa;
-        }
-        body {
-            color: #333;
-            overflow-x: hidden;
+            color: #000;
         }
         /* Sidebar Styles */
         .sidebar {
@@ -235,6 +233,7 @@
         [data-bs-theme="dark"] body {
             background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
             background-attachment: fixed;
+            color: #fff;
         }
         [data-bs-theme="dark"] .topbar {
             background-color: rgba(33, 37, 41, 0.8) !important;
@@ -318,7 +317,7 @@
             </button>
             <span class="d-md-none fw-bold text-body me-1" style="font-size: 0.9rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Contractual</span></span>
             <div class="d-none d-md-flex align-items-center">
-                <span class="fw-bold text-muted me-2">Vigencia:</span>
+                <span class="fw-bold me-2">Vigencia:</span>
                 <div style="width: 100px;">
                     <select class="form-select form-select-sm vigencia-select" id="selector_vigencia">
                         <?php 

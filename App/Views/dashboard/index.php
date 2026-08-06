@@ -3,7 +3,7 @@
 <div class="row mb-4">
     <div class="col-12">
         <h2 class="fw-bold">Resumen General</h2>
-        <p class="text-muted">Bienvenido de nuevo, <?php echo htmlspecialchars($usuario_nombre); ?>. Aquí tienes el estado de los contratos.</p>
+        <p class="fw-bold">Bienvenido de nuevo, <?php echo htmlspecialchars($usuario_nombre); ?>. Aquí tienes el estado de los contratos.</p>
     </div>
 </div>
 
@@ -14,10 +14,10 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="text-white-50">Contratos Activos</h6>
+                        <h6 class="fw-bold">Contratos Activos</h6>
                         <h2 class="mb-0 fw-bold">45</h2>
                     </div>
-                    <div class="fs-1 text-white-50"><i class="fas fa-file-signature"></i></div>
+                    <div class="fs-1"><i class="fas fa-file-signature"></i></div>
                 </div>
             </div>
         </div>
@@ -28,10 +28,10 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="text-black-50">Por Vencer (30 días)</h6>
+                        <h6 class="fw-bold">Por Vencer (30 días)</h6>
                         <h2 class="mb-0 fw-bold">8</h2>
                     </div>
-                    <div class="fs-1 text-black-50"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="fs-1"><i class="fas fa-exclamation-triangle"></i></div>
                 </div>
             </div>
         </div>
@@ -42,10 +42,10 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="text-white-50">Monto Total</h6>
+                        <h6 class="fw-bold">Monto Total</h6>
                         <h2 class="mb-0 fw-bold">$1.2M</h2>
                     </div>
-                    <div class="fs-1 text-white-50"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="fs-1"><i class="fas fa-dollar-sign"></i></div>
                 </div>
             </div>
         </div>
@@ -56,10 +56,10 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h6 class="text-white-50">Clientes Activos</h6>
+                        <h6 class="fw-bold">Clientes Activos</h6>
                         <h2 class="mb-0 fw-bold">12</h2>
                     </div>
-                    <div class="fs-1 text-white-50"><i class="fas fa-building"></i></div>
+                    <div class="fs-1"><i class="fas fa-building"></i></div>
                 </div>
             </div>
         </div>
