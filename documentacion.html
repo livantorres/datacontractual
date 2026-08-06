@@ -59,7 +59,8 @@
                 <span class="tech-badge">DataTables (Tablas dinámicas)</span>
                 <span class="tech-badge">Select2 (Búsqueda en selectores)</span>
                 <span class="tech-badge">Chart.js (Gráficas)</span>
-                <span class="tech-badge">Librerías PDF/Excel/Word (DomPDF, PhpSpreadsheet, PHPWord)</span>
+                <span class="tech-badge">FPDI & TCPDF (Cifrado de PDFs al vuelo)</span>
+                <span class="tech-badge">Smalot/PdfParser (Validación Inteligente / OCR)</span>
             </div>
         </div>
 
@@ -102,15 +103,27 @@
                 <li><strong>Autenticación:</strong> El usuario ingresa con sus credenciales (ej. admin@datacontractual.com). El sistema verifica el hash y registra la IP.</li>
                 <li><strong>Vigencia Automática:</strong> El sistema identifica automáticamente el año actual y lo carga en la sesión (Ej. 2026).</li>
                 <li><strong>Dashboard Principal:</strong> El usuario accede a una interfaz premium. Puede cambiar la vigencia desde el menú superior (Selector de años usando Select2). Al cambiar la vigencia por AJAX, la sesión se actualiza y la pantalla se recarga para mostrar datos exclusivos de ese año.</li>
-                <li><strong>Gestión de Clientes:</strong> Módulo para crear Instituciones o Clientes Independientes (Fase 3).</li>
-                <li><strong>Plantillas de Contratos:</strong> Configuración de textos y variables que serán reemplazadas dinámicamente al generar un documento.</li>
-                <li><strong>Generación de Contratos:</strong> Se toma un Cliente, se cruza con una Plantilla, y se genera un Contrato final.</li>
-                <li><strong>Firmas y Respaldos:</strong> El contrato se exporta en PDF o Word para firma física. Luego de firmado, el usuario puede subir el PDF escaneado al sistema como respaldo digital definitivo.</li>
+                <li><strong>Gestión de Clientes (Fase 3 - Completada):</strong> Creación de perfiles (Institución/Independiente). Carga de Foto, Documento Base (NIT) y RUT con validación de Inteligencia Artificial, previsualización en vivo, y descarga cifrada.</li>
+                <li><strong>Plantillas de Contratos (Próxima):</strong> Configuración de textos y variables dinámicas.</li>
+                <li><strong>Generación de Contratos (Próxima):</strong> Cruce entre Cliente y Plantilla para generar PDF/Word.</li>
+                <li><strong>Firmas y Respaldos (Próxima):</strong> Subida del contrato final escaneado.</li>
             </ol>
         </div>
 
         <div class="content-section">
-            <h2>5. Estructura de Base de Datos (Core)</h2>
+            <h2>5. Características Avanzadas (Módulo Clientes)</h2>
+            <p>El Módulo de Clientes integra tecnologías de punta para garantizar seguridad y usabilidad:</p>
+            <ul class="custom-list">
+                <li><strong>Gestión de Archivos Estricta:</strong> Los archivos se guardan en subcarpetas específicas (<code>fotos/</code>, <code>documentos_nit/</code>, <code>rut/</code>) renombrándose dinámicamente como <code>tipo_nit_id.ext</code> para evitar colisiones. El sistema elimina físicamente (unlink) archivos antiguos o huérfanos de manera automática.</li>
+                <li><strong>Validación Inteligente (AI PDF Parsing):</strong> Al subir el RUT, el motor <code>Smalot/PdfParser</code> lee el texto interno del documento y verifica que el NIT escrito en el formulario exista dentro del archivo. Si es un archivo incorrecto, se bloquea la subida preventivamente.</li>
+                <li><strong>Descargas Cifradas (AES):</strong> Los PDF se guardan limpios en carpetas privadas. Al descargar, el motor <code>TCPDF + FPDI</code> inyecta cifrado al vuelo usando el NIT del cliente como contraseña obligatoria para abrir el documento.</li>
+                <li><strong>Previsualización Interactiva:</strong> Uso extensivo de <code>SweetAlert2</code> para mostrar vistas previas inmersivas (imágenes y PDFs a 80vh) de archivos cargados en memoria <em>antes</em> de guardar, y miniaturas para archivos ya guardados.</li>
+                <li><strong>UI Responsiva Premium:</strong> Interfaz adaptable con <code>DataTables Responsive Extension</code> para ocultar columnas en móviles sin romper el diseño, complementada con un entorno Dark Mode dinámico.</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h2>6. Estructura de Base de Datos (Core)</h2>
             <p>La base de datos se rige por un esquema relacional estricto:</p>
             
             <div class="card bg-light border-0 mb-4 p-3 overflow-auto">
@@ -157,7 +170,7 @@
         </div>
 
         <div class="content-section">
-            <h2>6. Diseño UI/UX y Modo Oscuro</h2>
+            <h2>7. Diseño UI/UX y Modo Oscuro</h2>
             <p>El sistema cuenta con una interfaz premium adaptable:</p>
             <ul class="custom-list">
                 <li><strong>Diseño Responsivo:</strong> Adaptación perfecta a móviles, tablets y escritorio. Sidebar lateral colapsable (modo íconos).</li>
