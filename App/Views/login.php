@@ -98,21 +98,10 @@
             </div>
             
             <div class="mb-4">
-                <label for="vigencia_id" class="form-label text-muted small">Vigencia (Año Fiscal)</label>
-                <select class="form-select" id="vigencia_id" name="vigencia_id" required>
-                    <?php if (!empty($vigencias)): ?>
-                        <?php foreach($vigencias as $v): ?>
-                            <option value="<?php echo htmlspecialchars($v['id']); ?>"><?php echo htmlspecialchars($v['anio']); ?></option>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <option value="">No hay vigencias activas</option>
-                    <?php endif; ?>
-                </select>
+                <button type="submit" class="btn btn-primary" id="btnSubmit">
+                    Ingresar al Sistema
+                </button>
             </div>
-            
-            <button type="submit" class="btn btn-primary" id="btnSubmit">
-                Ingresar al Sistema
-            </button>
         </form>
     </div>
 
@@ -132,7 +121,6 @@
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const vigencia_id = document.getElementById('vigencia_id').value;
             
             fetch('/login/authenticate', {
                 method: 'POST',
@@ -141,8 +129,7 @@
                 },
                 body: JSON.stringify({
                     email: email,
-                    password: password,
-                    vigencia_id: vigencia_id
+                    password: password
                 })
             })
             .then(response => response.json())

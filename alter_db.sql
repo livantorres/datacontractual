@@ -1,0 +1,3 @@
+ALTER TABLE clientes ADD COLUMN actualizado_por INT NULL, ADD COLUMN actualizado_en TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP, ADD CONSTRAINT fk_clientes_usuario FOREIGN KEY (actualizado_por) REFERENCES usuarios(id) ON DELETE SET NULL;
+ALTER TABLE plantillas_contrato ADD COLUMN actualizado_por INT NULL, ADD COLUMN actualizado_en TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP, ADD CONSTRAINT fk_plantillas_usuario FOREIGN KEY (actualizado_por) REFERENCES usuarios(id) ON DELETE SET NULL;
+ALTER TABLE contratos ADD COLUMN actualizado_por INT NULL, ADD COLUMN actualizado_en TIMESTAMP NULL ON UPDATE CURRENT_TIMESTAMP, ADD CONSTRAINT fk_contratos_usuario_act FOREIGN KEY (actualizado_por) REFERENCES usuarios(id) ON DELETE SET NULL;

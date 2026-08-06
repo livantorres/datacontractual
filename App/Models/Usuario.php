@@ -41,9 +41,32 @@ class Usuario {
      */
     public static function getVigencias() {
         $db = Database::getConnection();
-        $sql = "SELECT id, anio FROM vigencias WHERE estado = 'Activa' ORDER BY anio DESC";
+        $sql = "SELECT id, anio FROM vigencias ORDER BY anio DESC";
         $stmt = $db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+    
+    /**
+     * Obtener la vigencia activa por defecto
+     */
+    public static function getVigenciaActiva() {
+        $db = Database::getConnection();
+        $sql = "SELECT id, anio FROM vigencias WHERE estado = 'Activa' LIMIT 1";
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    
+    /**
+     * Registra el inicio de sesión en la bitácora
+     */
+    public static function registrarAcceso($usuario_id, $ip) {
+        $db = Database::getConnection();
+        $sql = "INSERT INTO bitacora_auditoria (usuario_id, accion, modulo, detalles, ip) VALUES (:user_id, 'Inicio de Sesión', 'Autenticación', 'El usuario ingresó al sistema', :ip)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':user_id', $usuario_id, PDO::PARAM_INT);
+        $stmt->bindParam(':ip', $ip, PDO::PARAM_STR);
+        $stmt->execute();
     }
 }

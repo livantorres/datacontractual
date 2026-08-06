@@ -15,8 +15,7 @@ class LoginController extends BaseController {
             exit;
         }
         
-        $vigencias = Usuario::getVigencias();
-        $this->render('login', ['vigencias' => $vigencias]);
+        $this->render('login');
     }
     
     /**
@@ -32,9 +31,8 @@ class LoginController extends BaseController {
             
             $email = trim($data['email'] ?? '');
             $password = $data['password'] ?? '';
-            $vigencia_id = $data['vigencia_id'] ?? '';
             
-            if (empty($email) || empty($password) || empty($vigencia_id)) {
+            if (empty($email) || empty($password)) {
                 echo json_encode(['success' => false, 'message' => 'Por favor, complete todos los campos.']);
                 return;
             }
@@ -42,11 +40,19 @@ class LoginController extends BaseController {
             $result = Usuario::authenticate($email, $password);
             
             if ($result['success']) {
+                // Obtener vigencia activa por defecto
+                $vigencia = Usuario::getVigenciaActiva();
+                
                 // Configurar sesión
                 $_SESSION['usuario_id'] = $result['user']['id'];
                 $_SESSION['usuario_nombre'] = $result['user']['nombre'];
                 $_SESSION['rol_id'] = $result['user']['rol_id'];
-                $_SESSION['vigencia_actual'] = $vigencia_id;
+                $_SESSION['vigencia_actual'] = $vigencia ? $vigencia['anio'] : date('Y');
+                $_SESSION['vigencia_id'] = $vigencia ? $vigencia['id'] : null;
+                
+                // Registrar IP en bitácora
+                $ip = $_SERVER['REMOTE_ADDR'];
+                Usuario::registrarAcceso($result['user']['id'], $ip);
                 
                 echo json_encode(['success' => true, 'redirect' => '/dashboard']);
             } else {

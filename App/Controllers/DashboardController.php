@@ -20,4 +20,23 @@ class DashboardController extends BaseController {
         
         $this->render('dashboard/index', $data);
     }
+    
+    /**
+     * Endpoint para actualizar la vigencia actual vía AJAX
+     */
+    public function setVigencia() {
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $json = file_get_contents('php://input');
+            $data = json_decode($json, true);
+            
+            if (!empty($data['vigencia_id']) && !empty($data['anio'])) {
+                $_SESSION['vigencia_id'] = $data['vigencia_id'];
+                $_SESSION['vigencia_actual'] = $data['anio'];
+                echo json_encode(['success' => true]);
+                return;
+            }
+        }
+        echo json_encode(['success' => false]);
+    }
 }
