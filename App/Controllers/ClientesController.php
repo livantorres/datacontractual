@@ -137,9 +137,13 @@ class ClientesController {
                 $ext = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
                 $fotoName = 'foto_' . $nitLimpio . '_' . $id . '.' . $ext;
                 
-                // Borrar foto anterior si existe
-                if ($clienteActual && $clienteActual['foto'] && file_exists($this->uploadBaseDir . $this->dirs['fotos'] . $clienteActual['foto'])) {
-                    unlink($this->uploadBaseDir . $this->dirs['fotos'] . $clienteActual['foto']);
+                // Borrar foto anterior si existe (nueva ruta o legado)
+                if ($clienteActual && $clienteActual['foto']) {
+                    if (file_exists($this->uploadBaseDir . $this->dirs['fotos'] . $clienteActual['foto'])) {
+                        unlink($this->uploadBaseDir . $this->dirs['fotos'] . $clienteActual['foto']);
+                    } elseif (file_exists($this->uploadBaseDir . $clienteActual['foto'])) {
+                        unlink($this->uploadBaseDir . $clienteActual['foto']);
+                    }
                 }
 
                 if (move_uploaded_file($_FILES['foto']['tmp_name'], $this->uploadBaseDir . $this->dirs['fotos'] . $fotoName)) {
@@ -153,8 +157,12 @@ class ClientesController {
                 if (strtolower($ext) === 'pdf') {
                     $pdfName = 'doc_nit_' . $nitLimpio . '_' . $id . '.pdf';
                     
-                    if ($clienteActual && $clienteActual['documento_pdf'] && file_exists($this->uploadBaseDir . $this->dirs['documentos_nit'] . $clienteActual['documento_pdf'])) {
-                        unlink($this->uploadBaseDir . $this->dirs['documentos_nit'] . $clienteActual['documento_pdf']);
+                    if ($clienteActual && $clienteActual['documento_pdf']) {
+                        if (file_exists($this->uploadBaseDir . $this->dirs['documentos_nit'] . $clienteActual['documento_pdf'])) {
+                            unlink($this->uploadBaseDir . $this->dirs['documentos_nit'] . $clienteActual['documento_pdf']);
+                        } elseif (file_exists($this->uploadBaseDir . $clienteActual['documento_pdf'])) {
+                            unlink($this->uploadBaseDir . $clienteActual['documento_pdf']);
+                        }
                     }
 
                     if (move_uploaded_file($_FILES['documento_pdf']['tmp_name'], $this->uploadBaseDir . $this->dirs['documentos_nit'] . $pdfName)) {
@@ -169,8 +177,12 @@ class ClientesController {
                 if (strtolower($ext) === 'pdf') {
                     $rutName = 'doc_rut_' . $nitLimpio . '_' . $id . '.pdf';
                     
-                    if ($clienteActual && $clienteActual['rut_pdf'] && file_exists($this->uploadBaseDir . $this->dirs['rut'] . $clienteActual['rut_pdf'])) {
-                        unlink($this->uploadBaseDir . $this->dirs['rut'] . $clienteActual['rut_pdf']);
+                    if ($clienteActual && $clienteActual['rut_pdf']) {
+                        if (file_exists($this->uploadBaseDir . $this->dirs['rut'] . $clienteActual['rut_pdf'])) {
+                            unlink($this->uploadBaseDir . $this->dirs['rut'] . $clienteActual['rut_pdf']);
+                        } elseif (file_exists($this->uploadBaseDir . $clienteActual['rut_pdf'])) {
+                            unlink($this->uploadBaseDir . $clienteActual['rut_pdf']);
+                        }
                     }
 
                     if (move_uploaded_file($_FILES['rut_pdf']['tmp_name'], $this->uploadBaseDir . $this->dirs['rut'] . $rutName)) {
@@ -221,15 +233,29 @@ class ClientesController {
         if ($id) {
             $cliente = $this->clienteModel->getById($id);
             if ($cliente) {
-                // Eliminar archivos adjuntos si existen en sus carpetas
-                if ($cliente['foto'] && file_exists($this->uploadBaseDir . $this->dirs['fotos'] . $cliente['foto'])) {
-                    unlink($this->uploadBaseDir . $this->dirs['fotos'] . $cliente['foto']);
+                // Eliminar archivos adjuntos si existen en sus carpetas o en la carpeta raíz (legado)
+                if ($cliente['foto']) {
+                    if (file_exists($this->uploadBaseDir . $this->dirs['fotos'] . $cliente['foto'])) {
+                        unlink($this->uploadBaseDir . $this->dirs['fotos'] . $cliente['foto']);
+                    } elseif (file_exists($this->uploadBaseDir . $cliente['foto'])) {
+                        unlink($this->uploadBaseDir . $cliente['foto']);
+                    }
                 }
-                if ($cliente['documento_pdf'] && file_exists($this->uploadBaseDir . $this->dirs['documentos_nit'] . $cliente['documento_pdf'])) {
-                    unlink($this->uploadBaseDir . $this->dirs['documentos_nit'] . $cliente['documento_pdf']);
+                
+                if ($cliente['documento_pdf']) {
+                    if (file_exists($this->uploadBaseDir . $this->dirs['documentos_nit'] . $cliente['documento_pdf'])) {
+                        unlink($this->uploadBaseDir . $this->dirs['documentos_nit'] . $cliente['documento_pdf']);
+                    } elseif (file_exists($this->uploadBaseDir . $cliente['documento_pdf'])) {
+                        unlink($this->uploadBaseDir . $cliente['documento_pdf']);
+                    }
                 }
-                if ($cliente['rut_pdf'] && file_exists($this->uploadBaseDir . $this->dirs['rut'] . $cliente['rut_pdf'])) {
-                    unlink($this->uploadBaseDir . $this->dirs['rut'] . $cliente['rut_pdf']);
+                
+                if ($cliente['rut_pdf']) {
+                    if (file_exists($this->uploadBaseDir . $this->dirs['rut'] . $cliente['rut_pdf'])) {
+                        unlink($this->uploadBaseDir . $this->dirs['rut'] . $cliente['rut_pdf']);
+                    } elseif (file_exists($this->uploadBaseDir . $cliente['rut_pdf'])) {
+                        unlink($this->uploadBaseDir . $cliente['rut_pdf']);
+                    }
                 }
             }
             

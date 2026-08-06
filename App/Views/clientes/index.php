@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${btnDoc}
                             ${btnRut}
                             ${btnEstado}
-                            <!-- <button class="btn btn-sm btn-outline-danger btn-eliminar-fisico" title="Eliminar Físicamente"><i class="fas fa-trash"></i></button> -->
+                            <button class="btn btn-sm btn-outline-danger btn-eliminar-fisico" title="Eliminar Físicamente"><i class="fas fa-trash"></i></button>
                         </div>
                     `;
                 }
