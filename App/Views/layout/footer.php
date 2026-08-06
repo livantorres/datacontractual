@@ -18,8 +18,19 @@
 <script>
     // Toggle Sidebar para móvil y escritorio
     document.getElementById('toggle-sidebar')?.addEventListener('click', function() {
-        document.getElementById('sidebar').classList.toggle('collapsed');
-        document.getElementById('main-content').classList.toggle('collapsed');
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.toggle('mobile-open');
+            document.getElementById('sidebar-overlay').classList.toggle('active');
+        } else {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('main-content').classList.toggle('collapsed');
+        }
+    });
+    
+    // Cerrar sidebar al hacer clic en el overlay (Móvil)
+    document.getElementById('sidebar-overlay')?.addEventListener('click', function() {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        this.classList.remove('active');
     });
 
     // Actualizar Vigencia

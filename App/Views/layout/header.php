@@ -35,11 +35,7 @@
             background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
             color: #fff;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            z-index: 1000;
-            overflow: hidden;
-        }
-        .sidebar.collapsed {
-            width: 70px;
+            z-index: 1040;
         }
         .sidebar-header {
             padding: 20px;
@@ -48,17 +44,9 @@
             font-weight: 700;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             white-space: nowrap;
+            overflow: hidden;
         }
         .sidebar-header span { color: #5bc0be; }
-        .sidebar.collapsed .sidebar-header {
-            font-size: 0;
-            padding: 20px 0;
-        }
-        .sidebar.collapsed .sidebar-header::before {
-            content: 'DC';
-            font-size: 1.5rem;
-            color: #5bc0be;
-        }
         
         .sidebar-menu {
             padding: 20px 0;
@@ -67,6 +55,7 @@
         }
         .sidebar-menu li {
             padding: 5px 15px;
+            position: relative;
         }
         .sidebar-menu li a {
             color: rgba(255,255,255,0.8);
@@ -88,27 +77,62 @@
             text-align: center;
             font-size: 1.1rem;
         }
-        .sidebar.collapsed .sidebar-menu li a {
-            justify-content: center;
-            padding: 12px 0;
-        }
-        .sidebar.collapsed .sidebar-menu li a i {
-            margin-right: 0;
-        }
-        .sidebar.collapsed .sidebar-menu li a .menu-text {
-            display: none;
+        
+        /* Sidebar Collapsed (Desktop Only) */
+        @media (min-width: 769px) {
+            .sidebar.collapsed {
+                width: 70px;
+            }
+            .sidebar.collapsed .sidebar-header {
+                font-size: 0;
+                padding: 20px 0;
+            }
+            .sidebar.collapsed .sidebar-header::before {
+                content: 'DC';
+                font-size: 1.5rem;
+                color: #5bc0be;
+            }
+            .sidebar.collapsed .sidebar-menu li a {
+                justify-content: center;
+                padding: 12px 0;
+            }
+            .sidebar.collapsed .sidebar-menu li a i {
+                margin-right: 0;
+            }
+            .sidebar.collapsed .sidebar-menu li a .menu-text {
+                position: absolute;
+                left: 75px;
+                background-color: #0f2027;
+                padding: 8px 15px;
+                border-radius: 5px;
+                font-size: 0.85rem;
+                opacity: 0;
+                visibility: hidden;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                transition: opacity 0.2s;
+                z-index: 1050;
+                pointer-events: none;
+            }
+            .sidebar.collapsed .sidebar-menu li a:hover .menu-text {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .main-content {
+                margin-left: 250px;
+            }
+            .main-content.collapsed {
+                margin-left: 70px;
+            }
         }
         
         /* Main Content */
         .main-content {
-            margin-left: 250px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-        .main-content.collapsed {
-            margin-left: 70px;
+            width: 100%;
         }
         
         /* Topbar */
@@ -120,6 +144,9 @@
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1030;
         }
         
         .page-content {
@@ -137,16 +164,53 @@
             transform: translateY(-5px);
         }
         
+        /* Mobile Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1035;
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar { transform: translateX(-250px); width: 250px; }
-            .sidebar.collapsed { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-            .main-content.collapsed { margin-left: 0; }
+            .sidebar { 
+                transform: translateX(-100%); 
+            }
+            .sidebar.mobile-open { 
+                transform: translateX(0); 
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+            
+            /* Ajustes del topbar en móvil para evitar superposición */
+            .topbar {
+                padding: 0 15px;
+            }
+            .topbar-right-content {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            #selector_vigencia {
+                width: 80px !important;
+                font-size: 0.8rem;
+                padding: 0.25rem;
+            }
+            .user-profile span {
+                font-size: 0.85rem;
+            }
+            .user-profile .btn {
+                padding: 0.35rem 0.6rem !important;
+            }
         }
     </style>
 </head>
 <body>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
 
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
@@ -177,7 +241,7 @@
 <div class="main-content" id="main-content">
     <div class="topbar">
         <div class="d-flex align-items-center">
-            <button class="btn btn-light me-3" id="toggle-sidebar">
+            <button class="btn btn-light me-2 me-md-3" id="toggle-sidebar">
                 <i class="fas fa-bars"></i>
             </button>
             <div class="d-flex align-items-center">
@@ -194,8 +258,8 @@
                 </select>
             </div>
         </div>
-        <div class="user-profile">
-            <span class="me-2 text-dark fw-semibold"><?php echo $_SESSION['usuario_nombre']; ?></span>
+        <div class="user-profile topbar-right-content d-flex align-items-center">
+            <span class="me-2 text-dark fw-semibold d-none d-sm-inline"><?php echo $_SESSION['usuario_nombre']; ?></span>
             <div class="btn btn-secondary rounded-circle px-3 py-2"><i class="fas fa-user"></i></div>
         </div>
     </div>
