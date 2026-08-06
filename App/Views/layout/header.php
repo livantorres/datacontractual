@@ -204,60 +204,41 @@
             }
         }
         
-        /* Dark Mode Styles */
-        body.dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
-        }
-        body.dark-mode .topbar {
-            background-color: #1e1e1e;
-            border-bottom: 1px solid #333;
-            box-shadow: none;
-        }
-        body.dark-mode .topbar .text-dark {
-            color: #e0e0e0 !important;
-        }
-        body.dark-mode .topbar .text-muted {
-            color: #a0a0a0 !important;
-        }
-        body.dark-mode .card-premium {
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-        }
-        body.dark-mode .card-premium h6, body.dark-mode .card-premium h3 {
-            color: #e0e0e0 !important;
-        }
-        body.dark-mode .btn-light {
-            background-color: #2c2c2c;
-            color: #e0e0e0;
-            border-color: #444;
-        }
-        body.dark-mode .btn-light:hover {
-            background-color: #444;
-            color: #fff;
-        }
         /* Fix Select2 in Dark Mode */
-        body.dark-mode .select2-container--bootstrap-5 .select2-selection {
-            background-color: #2c2c2c;
-            color: #e0e0e0;
-            border-color: #444;
+        [data-bs-theme="dark"] .select2-container--bootstrap-5 .select2-selection {
+            background-color: #2b3035;
+            color: #dee2e6;
+            border-color: #495057;
         }
-        body.dark-mode .select2-container--bootstrap-5 .select2-selection__rendered {
-            color: #e0e0e0;
+        [data-bs-theme="dark"] .select2-container--bootstrap-5 .select2-selection__rendered {
+            color: #dee2e6;
         }
-        body.dark-mode .select2-dropdown {
-            background-color: #2c2c2c;
-            border-color: #444;
+        [data-bs-theme="dark"] .select2-dropdown {
+            background-color: #2b3035;
+            border-color: #495057;
         }
-        body.dark-mode .select2-results__option {
-            color: #e0e0e0;
+        [data-bs-theme="dark"] .select2-results__option {
+            color: #dee2e6;
         }
-        body.dark-mode .select2-results__option--highlighted {
-            background-color: #444;
+        [data-bs-theme="dark"] .select2-results__option--highlighted {
+            background-color: #3d434a;
             color: #fff;
         }
-        body.dark-mode .sidebar {
+        [data-bs-theme="dark"] .sidebar {
             border-right: 1px solid #333;
+        }
+        [data-bs-theme="dark"] .topbar {
+            background-color: #212529;
+            border-bottom: 1px solid #333;
+        }
+        [data-bs-theme="dark"] .btn-light {
+            background-color: #2b3035;
+            color: #dee2e6;
+            border-color: #495057;
+        }
+        [data-bs-theme="dark"] .btn-light:hover {
+            background-color: #3d434a;
+            color: #fff;
         }
         
         /* Forzar z-index del Dropdown de Select2 por encima de todo */

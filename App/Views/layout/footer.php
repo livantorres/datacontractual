@@ -54,11 +54,11 @@
     
     function setDarkMode(isDark) {
         if (isDark) {
-            document.body.classList.add('dark-mode');
+            document.documentElement.setAttribute('data-bs-theme', 'dark');
             themeToggleIcon?.classList.replace('fa-moon', 'fa-sun');
             localStorage.setItem('theme', 'dark');
         } else {
-            document.body.classList.remove('dark-mode');
+            document.documentElement.setAttribute('data-bs-theme', 'light');
             themeToggleIcon?.classList.replace('fa-sun', 'fa-moon');
             localStorage.setItem('theme', 'light');
         }
@@ -70,7 +70,7 @@
     }
 
     themeToggleBtn?.addEventListener('click', function() {
-        const isDark = document.body.classList.contains('dark-mode');
+        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
         setDarkMode(!isDark);
     });
 
