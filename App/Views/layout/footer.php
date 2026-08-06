@@ -19,15 +19,16 @@
     // Inicializar Select2 en todos los select que tengan la clase form-select (excepto los que no queramos)
     $(document).ready(function() {
         // Para Selects Generales
-        $('select:not(#selector_vigencia):not(#selector_vigencia_movil)').select2({
+        $('select.form-select:not(.vigencia-select)').select2({
             theme: 'bootstrap-5',
-            width: '100%'
+            width: 'resolve'
         });
         
         // Para los selectores de vigencia (evitar que la caja de búsqueda se muestre si hay pocos)
-        $('#selector_vigencia, #selector_vigencia_movil').select2({
+        $('.vigencia-select').select2({
             theme: 'bootstrap-5',
-            minimumResultsForSearch: Infinity
+            minimumResultsForSearch: Infinity,
+            width: '100%'
         });
     });
 
@@ -76,7 +77,7 @@
     }
 
     // Eventos para selectores de vigencia (usando jQuery por Select2)
-    $('#selector_vigencia, #selector_vigencia_movil').on('change', function() {
+    $('.vigencia-select').on('change', function() {
         const vigencia_id = $(this).val();
         const anio = $(this).find('option:selected').text();
         actualizarVigencia(vigencia_id, anio);

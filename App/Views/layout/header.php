@@ -240,28 +240,31 @@
 
 <div class="main-content" id="main-content">
     <div class="topbar">
-        <div class="d-flex align-items-center">
-            <button class="btn btn-light me-2 me-md-3" id="toggle-sidebar" style="position: relative; z-index: 1050;">
+        <div class="d-flex align-items-center flex-shrink-0">
+            <button class="btn btn-light me-2" id="toggle-sidebar" style="position: relative; z-index: 1050; padding: 0.375rem 0.6rem;">
                 <i class="fas fa-bars"></i>
             </button>
-            <span class="d-md-none fw-bold text-dark me-2" style="font-size: 1.1rem;">Data<span style="color: #5bc0be;">Contractual</span></span>
-            <div class="d-flex align-items-center d-none d-sm-flex">
+            <span class="d-md-none fw-bold text-dark me-2" style="font-size: 0.95rem; white-space: nowrap;">Data<span style="color: #5bc0be;">Contractual</span></span>
+            <div class="d-none d-md-flex align-items-center">
                 <span class="fw-bold text-muted me-2">Vigencia:</span>
-                <select class="form-select form-select-sm" id="selector_vigencia" style="width: 100px;">
-                    <?php 
-                    require_once __DIR__ . '/../../Models/Usuario.php';
-                    $vigencias = \App\Models\Usuario::getVigencias();
-                    foreach ($vigencias as $v):
-                        $selected = ($_SESSION['vigencia_id'] ?? '') == $v['id'] ? 'selected' : '';
-                    ?>
-                        <option value="<?php echo $v['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($v['anio']); ?></option>
-                    <?php endforeach; ?>
-                </select>
+                <div style="width: 100px;">
+                    <select class="form-select form-select-sm vigencia-select" id="selector_vigencia">
+                        <?php 
+                        require_once __DIR__ . '/../../Models/Usuario.php';
+                        $vigencias = \App\Models\Usuario::getVigencias();
+                        foreach ($vigencias as $v):
+                            $selected = ($_SESSION['vigencia_id'] ?? '') == $v['id'] ? 'selected' : '';
+                        ?>
+                            <option value="<?php echo $v['id']; ?>" <?php echo $selected; ?>><?php echo htmlspecialchars($v['anio']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="user-profile topbar-right-content d-flex align-items-center">
-            <div class="d-md-none d-sm-flex me-2">
-                <select class="form-select form-select-sm" id="selector_vigencia_movil" style="width: 80px;">
+        
+        <div class="user-profile topbar-right-content d-flex align-items-center flex-shrink-0 ms-auto">
+            <div class="d-md-none me-2" style="width: 80px;">
+                <select class="form-select form-select-sm vigencia-select" id="selector_vigencia_movil">
                     <?php 
                     foreach ($vigencias as $v):
                         $selected = ($_SESSION['vigencia_id'] ?? '') == $v['id'] ? 'selected' : '';
